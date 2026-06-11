@@ -1,0 +1,9 @@
+#!/bin/sh
+# Daemonless healthcheck for Papra.
+# nginx serves the SPA on port 1221 and proxies /api/ping to the backend.
+# /api/ping is a public route, so a 200 here means both nginx and node are up.
+if fetch -qo /dev/null "http://127.0.0.1:1221/api/ping" >/dev/null 2>&1; then
+    exit 0
+else
+    exit 1
+fi
