@@ -1,0 +1,1871 @@
+{
+  "generated": "2026-06-12T15:28:52Z",
+  "image": "papra",
+  "tags": {
+    "latest": {
+      "app_version": "26.5.0",
+      "arch": "amd64",
+      "generated": "2026-06-12T15:27:35Z",
+      "packages": {
+        "dotnet": [],
+        "freebsd": [
+          {
+            "name": "FreeBSD-audit-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-blocklist",
+            "version": "15.0p3"
+          },
+          {
+            "name": "FreeBSD-bzip2-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-certctl",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-clibs",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-ctf-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-fetch",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-kerberos-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-libarchive",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-libbsdstat",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-libcasper",
+            "version": "15.0p9"
+          },
+          {
+            "name": "FreeBSD-libexecinfo",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-libldns",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-libmagic",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-libucl",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-mtree",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-ncurses-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-openssl",
+            "version": "15.0p2"
+          },
+          {
+            "name": "FreeBSD-openssl-lib",
+            "version": "15.0p2"
+          },
+          {
+            "name": "FreeBSD-pkg-bootstrap",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-rc",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-runtime",
+            "version": "15.0p9"
+          },
+          {
+            "name": "FreeBSD-tcpd",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-ufs-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-utilities",
+            "version": "15.0p9"
+          },
+          {
+            "name": "FreeBSD-xz-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-zfs-lib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-zlib",
+            "version": "15.0"
+          },
+          {
+            "name": "FreeBSD-zoneinfo",
+            "version": "15.0p7"
+          },
+          {
+            "name": "brotli",
+            "version": "1.2.0,1"
+          },
+          {
+            "name": "c-ares",
+            "version": "1.34.6"
+          },
+          {
+            "name": "ca_root_nss",
+            "version": "3.124"
+          },
+          {
+            "name": "cairo",
+            "version": "1.18.2,3"
+          },
+          {
+            "name": "corepack",
+            "version": "0.34.6"
+          },
+          {
+            "name": "curl",
+            "version": "8.20.0"
+          },
+          {
+            "name": "execline",
+            "version": "2.9.8.1"
+          },
+          {
+            "name": "expat",
+            "version": "2.8.1"
+          },
+          {
+            "name": "fontconfig",
+            "version": "2.17.1,1"
+          },
+          {
+            "name": "freetype2",
+            "version": "2.14.3"
+          },
+          {
+            "name": "fribidi",
+            "version": "1.0.16"
+          },
+          {
+            "name": "gettext-runtime",
+            "version": "1.0"
+          },
+          {
+            "name": "giflib",
+            "version": "5.2.2"
+          },
+          {
+            "name": "glib",
+            "version": "2.84.4,2"
+          },
+          {
+            "name": "googletest",
+            "version": "1.16.0"
+          },
+          {
+            "name": "graphite2",
+            "version": "1.3.14"
+          },
+          {
+            "name": "harfbuzz",
+            "version": "13.2.1"
+          },
+          {
+            "name": "hdr_histogram",
+            "version": "0.11.9"
+          },
+          {
+            "name": "icu",
+            "version": "76.1,1"
+          },
+          {
+            "name": "indexinfo",
+            "version": "0.3.1_1"
+          },
+          {
+            "name": "jbigkit",
+            "version": "2.1_3"
+          },
+          {
+            "name": "jpeg-turbo",
+            "version": "3.1.4.1"
+          },
+          {
+            "name": "jq",
+            "version": "1.8.1"
+          },
+          {
+            "name": "leptonica",
+            "version": "1.87.0"
+          },
+          {
+            "name": "lerc",
+            "version": "4.0.0"
+          },
+          {
+            "name": "libX11",
+            "version": "1.8.13,1"
+          },
+          {
+            "name": "libXau",
+            "version": "1.0.12"
+          },
+          {
+            "name": "libXdmcp",
+            "version": "1.1.5"
+          },
+          {
+            "name": "libXext",
+            "version": "1.3.6,1"
+          },
+          {
+            "name": "libXft",
+            "version": "2.3.8"
+          },
+          {
+            "name": "libXrender",
+            "version": "0.9.12"
+          },
+          {
+            "name": "libada",
+            "version": "3.4.4"
+          },
+          {
+            "name": "libarchive",
+            "version": "3.8.5,1"
+          },
+          {
+            "name": "libdatrie",
+            "version": "0.2.14_1"
+          },
+          {
+            "name": "libdeflate",
+            "version": "1.25"
+          },
+          {
+            "name": "libedit",
+            "version": "3.1.20251016_1,1"
+          },
+          {
+            "name": "libffi",
+            "version": "3.5.1"
+          },
+          {
+            "name": "libiconv",
+            "version": "1.18_1"
+          },
+          {
+            "name": "libidn2",
+            "version": "2.3.8"
+          },
+          {
+            "name": "liblz4",
+            "version": "1.10.0_2,1"
+          },
+          {
+            "name": "libnghttp2",
+            "version": "1.68.1"
+          },
+          {
+            "name": "libnghttp3",
+            "version": "1.15.0"
+          },
+          {
+            "name": "libngtcp2",
+            "version": "1.22.1"
+          },
+          {
+            "name": "libpsl",
+            "version": "0.21.5_2"
+          },
+          {
+            "name": "libssh2",
+            "version": "1.11.1,3"
+          },
+          {
+            "name": "libthai",
+            "version": "0.1.30"
+          },
+          {
+            "name": "libunistring",
+            "version": "1.4.2"
+          },
+          {
+            "name": "libuv",
+            "version": "1.52.0"
+          },
+          {
+            "name": "libxcb",
+            "version": "1.17.0"
+          },
+          {
+            "name": "llhttp",
+            "version": "9.3.1"
+          },
+          {
+            "name": "lzo2",
+            "version": "2.10_1"
+          },
+          {
+            "name": "merve",
+            "version": "1.2.0_1"
+          },
+          {
+            "name": "mpdecimal",
+            "version": "4.0.1"
+          },
+          {
+            "name": "nbytes",
+            "version": "0.1.3"
+          },
+          {
+            "name": "nginx",
+            "version": "1.30.2,3"
+          },
+          {
+            "name": "node24",
+            "version": "24.14.1"
+          },
+          {
+            "name": "oniguruma",
+            "version": "6.9.10"
+          },
+          {
+            "name": "pango",
+            "version": "1.56.4_1"
+          },
+          {
+            "name": "pcre2",
+            "version": "10.47_1"
+          },
+          {
+            "name": "pixman",
+            "version": "0.46.2"
+          },
+          {
+            "name": "pkg",
+            "version": "2.6.2_1"
+          },
+          {
+            "name": "png",
+            "version": "1.6.57"
+          },
+          {
+            "name": "py311-packaging",
+            "version": "26.0"
+          },
+          {
+            "name": "python311",
+            "version": "3.11.15_2"
+          },
+          {
+            "name": "readline",
+            "version": "8.3.3"
+          },
+          {
+            "name": "s6",
+            "version": "2.14.0.1"
+          },
+          {
+            "name": "simdjson",
+            "version": "4.5.0"
+          },
+          {
+            "name": "simdutf",
+            "version": "8.2.0"
+          },
+          {
+            "name": "skalibs",
+            "version": "2.14.5.1"
+          },
+          {
+            "name": "sqlite3",
+            "version": "3.50.4_2,1"
+          },
+          {
+            "name": "tesseract",
+            "version": "5.5.2_1"
+          },
+          {
+            "name": "tesseract-data",
+            "version": "4.1.0"
+          },
+          {
+            "name": "tiff",
+            "version": "4.7.1_1"
+          },
+          {
+            "name": "uvwasi",
+            "version": "0.0.23"
+          },
+          {
+            "name": "webp",
+            "version": "1.6.0"
+          },
+          {
+            "name": "xorgproto",
+            "version": "2024.1"
+          },
+          {
+            "name": "zstd",
+            "version": "1.5.7_1"
+          }
+        ],
+        "go": [
+          {
+            "name": "github.com/evanw/esbuild",
+            "version": ""
+          },
+          {
+            "name": "golang.org/x/sys",
+            "version": "v0.0.0-20220715151400-c0bba94af5f8"
+          },
+          {
+            "name": "stdlib",
+            "version": "v1.20.7"
+          }
+        ],
+        "java": [],
+        "node": [
+          {
+            "name": "@aws-crypto/crc32",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-crypto/crc32c",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-crypto/sha1-browser",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-crypto/sha256-browser",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-crypto/sha256-js",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-crypto/supports-web-crypto",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-crypto/util",
+            "version": "5.2.0"
+          },
+          {
+            "name": "@aws-sdk/checksums",
+            "version": "3.1000.5"
+          },
+          {
+            "name": "@aws-sdk/client-s3",
+            "version": "3.1066.0"
+          },
+          {
+            "name": "@aws-sdk/core",
+            "version": "3.974.20"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-env",
+            "version": "3.972.46"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-http",
+            "version": "3.972.48"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-ini",
+            "version": "3.972.53"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-login",
+            "version": "3.972.52"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-node",
+            "version": "3.972.55"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-process",
+            "version": "3.972.46"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-sso",
+            "version": "3.972.52"
+          },
+          {
+            "name": "@aws-sdk/credential-provider-web-identity",
+            "version": "3.972.52"
+          },
+          {
+            "name": "@aws-sdk/lib-storage",
+            "version": "3.1066.0"
+          },
+          {
+            "name": "@aws-sdk/middleware-flexible-checksums",
+            "version": "3.974.30"
+          },
+          {
+            "name": "@aws-sdk/middleware-sdk-s3",
+            "version": "3.972.51"
+          },
+          {
+            "name": "@aws-sdk/nested-clients",
+            "version": "3.997.20"
+          },
+          {
+            "name": "@aws-sdk/signature-v4-multi-region",
+            "version": "3.996.34"
+          },
+          {
+            "name": "@aws-sdk/token-providers",
+            "version": "3.1066.0"
+          },
+          {
+            "name": "@aws-sdk/types",
+            "version": "3.973.12"
+          },
+          {
+            "name": "@aws-sdk/util-locate-window",
+            "version": "3.965.7"
+          },
+          {
+            "name": "@aws-sdk/xml-builder",
+            "version": "3.972.29"
+          },
+          {
+            "name": "@aws/lambda-invoke-store",
+            "version": "0.2.4"
+          },
+          {
+            "name": "@azure/abort-controller",
+            "version": "2.1.2"
+          },
+          {
+            "name": "@azure/core-auth",
+            "version": "1.10.1"
+          },
+          {
+            "name": "@azure/core-client",
+            "version": "1.10.2"
+          },
+          {
+            "name": "@azure/core-http-compat",
+            "version": "2.4.0"
+          },
+          {
+            "name": "@azure/core-lro",
+            "version": "2.7.2"
+          },
+          {
+            "name": "@azure/core-paging",
+            "version": "1.6.2"
+          },
+          {
+            "name": "@azure/core-rest-pipeline",
+            "version": "1.24.0"
+          },
+          {
+            "name": "@azure/core-tracing",
+            "version": "1.3.1"
+          },
+          {
+            "name": "@azure/core-util",
+            "version": "1.13.1"
+          },
+          {
+            "name": "@azure/core-xml",
+            "version": "1.5.1"
+          },
+          {
+            "name": "@azure/logger",
+            "version": "1.3.0"
+          },
+          {
+            "name": "@azure/storage-blob",
+            "version": "12.32.0"
+          },
+          {
+            "name": "@azure/storage-common",
+            "version": "12.4.0"
+          },
+          {
+            "name": "@babel/helper-string-parser",
+            "version": "7.29.7"
+          },
+          {
+            "name": "@babel/helper-validator-identifier",
+            "version": "7.29.7"
+          },
+          {
+            "name": "@babel/parser",
+            "version": "7.29.7"
+          },
+          {
+            "name": "@babel/types",
+            "version": "7.29.7"
+          },
+          {
+            "name": "@better-auth/core",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/drizzle-adapter",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/expo",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/kysely-adapter",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/memory-adapter",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/mongo-adapter",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/prisma-adapter",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/telemetry",
+            "version": "1.6.11"
+          },
+          {
+            "name": "@better-auth/utils",
+            "version": "0.4.0"
+          },
+          {
+            "name": "@better-fetch/fetch",
+            "version": "1.1.21"
+          },
+          {
+            "name": "@borewit/text-codec",
+            "version": "0.2.2"
+          },
+          {
+            "name": "@cadence-mq/core",
+            "version": "0.2.3"
+          },
+          {
+            "name": "@cadence-mq/driver-libsql",
+            "version": "0.2.4"
+          },
+          {
+            "name": "@cadence-mq/driver-memory",
+            "version": "0.2.2"
+          },
+          {
+            "name": "@clack/core",
+            "version": "1.0.0-alpha.6"
+          },
+          {
+            "name": "@clack/prompts",
+            "version": "1.0.0-alpha.6"
+          },
+          {
+            "name": "@corentinth/chisels",
+            "version": "1.3.1"
+          },
+          {
+            "name": "@corentinth/friendly-ids",
+            "version": "0.0.1"
+          },
+          {
+            "name": "@crowlog/async-context-plugin",
+            "version": "2.1.1"
+          },
+          {
+            "name": "@crowlog/logger",
+            "version": "2.2.2"
+          },
+          {
+            "name": "@drizzle-team/brocli",
+            "version": "0.10.2"
+          },
+          {
+            "name": "@emnapi/runtime",
+            "version": "1.11.0"
+          },
+          {
+            "name": "@esbuild-kit/core-utils",
+            "version": "3.3.2"
+          },
+          {
+            "name": "@esbuild-kit/esm-loader",
+            "version": "2.6.5"
+          },
+          {
+            "name": "@esbuild/freebsd-x64",
+            "version": "0.18.20"
+          },
+          {
+            "name": "@hono/node-server",
+            "version": "2.0.4"
+          },
+          {
+            "name": "@img/colour",
+            "version": "1.1.0"
+          },
+          {
+            "name": "@img/sharp-wasm32",
+            "version": "0.34.5"
+          },
+          {
+            "name": "@jridgewell/sourcemap-codec",
+            "version": "1.5.5"
+          },
+          {
+            "name": "@libsql/client",
+            "version": "0.14.0"
+          },
+          {
+            "name": "@libsql/core",
+            "version": "0.14.0"
+          },
+          {
+            "name": "@libsql/hrana-client",
+            "version": "0.7.0"
+          },
+          {
+            "name": "@libsql/isomorphic-fetch",
+            "version": "0.3.1"
+          },
+          {
+            "name": "@libsql/isomorphic-ws",
+            "version": "0.1.5"
+          },
+          {
+            "name": "@napi-rs/canvas",
+            "version": "0.1.100"
+          },
+          {
+            "name": "@neon-rs/load",
+            "version": "0.0.4"
+          },
+          {
+            "name": "@noble/ciphers",
+            "version": "2.2.0"
+          },
+          {
+            "name": "@noble/hashes",
+            "version": "1.8.0"
+          },
+          {
+            "name": "@nodable/entities",
+            "version": "2.1.1"
+          },
+          {
+            "name": "@opentelemetry/semantic-conventions",
+            "version": "1.41.1"
+          },
+          {
+            "name": "@owlrelay/api-sdk",
+            "version": "0.0.3"
+          },
+          {
+            "name": "@owlrelay/webhook",
+            "version": "0.0.3"
+          },
+          {
+            "name": "@papra/app-server",
+            "version": "0.0.0"
+          },
+          {
+            "name": "@papra/lecture",
+            "version": "0.5.0"
+          },
+          {
+            "name": "@papra/search-parser",
+            "version": "0.1.1"
+          },
+          {
+            "name": "@papra/webhooks",
+            "version": "0.3.3"
+          },
+          {
+            "name": "@paralleldrive/cuid2",
+            "version": "2.3.1"
+          },
+          {
+            "name": "@posthog/core",
+            "version": "1.32.3"
+          },
+          {
+            "name": "@posthog/types",
+            "version": "1.386.3"
+          },
+          {
+            "name": "@react-email/render",
+            "version": "1.1.2"
+          },
+          {
+            "name": "@rollup/rollup-freebsd-x64",
+            "version": "4.61.1"
+          },
+          {
+            "name": "@selderee/plugin-htmlparser2",
+            "version": "0.11.0"
+          },
+          {
+            "name": "@sindresorhus/slugify",
+            "version": "3.0.0"
+          },
+          {
+            "name": "@sindresorhus/transliterate",
+            "version": "2.3.1"
+          },
+          {
+            "name": "@smithy/core",
+            "version": "3.24.6"
+          },
+          {
+            "name": "@smithy/credential-provider-imds",
+            "version": "4.3.8"
+          },
+          {
+            "name": "@smithy/fetch-http-handler",
+            "version": "5.4.6"
+          },
+          {
+            "name": "@smithy/is-array-buffer",
+            "version": "2.2.0"
+          },
+          {
+            "name": "@smithy/node-http-handler",
+            "version": "4.7.7"
+          },
+          {
+            "name": "@smithy/signature-v4",
+            "version": "5.4.6"
+          },
+          {
+            "name": "@smithy/types",
+            "version": "4.14.3"
+          },
+          {
+            "name": "@smithy/util-buffer-from",
+            "version": "2.2.0"
+          },
+          {
+            "name": "@smithy/util-utf8",
+            "version": "2.3.0"
+          },
+          {
+            "name": "@standard-schema/spec",
+            "version": "1.1.0"
+          },
+          {
+            "name": "@tokenizer/inflate",
+            "version": "0.4.1"
+          },
+          {
+            "name": "@tokenizer/token",
+            "version": "0.3.0"
+          },
+          {
+            "name": "@types/chai",
+            "version": "5.2.3"
+          },
+          {
+            "name": "@types/debug",
+            "version": "4.1.13"
+          },
+          {
+            "name": "@types/deep-eql",
+            "version": "4.0.2"
+          },
+          {
+            "name": "@types/estree",
+            "version": "1.0.9"
+          },
+          {
+            "name": "@types/ms",
+            "version": "2.1.0"
+          },
+          {
+            "name": "@types/node",
+            "version": "12.20.55"
+          },
+          {
+            "name": "@types/ws",
+            "version": "8.18.1"
+          },
+          {
+            "name": "@typespec/ts-http-runtime",
+            "version": "0.3.6"
+          },
+          {
+            "name": "@vitest/expect",
+            "version": "4.0.3"
+          },
+          {
+            "name": "@vitest/mocker",
+            "version": "4.0.3"
+          },
+          {
+            "name": "@vitest/pretty-format",
+            "version": "4.0.3"
+          },
+          {
+            "name": "@vitest/runner",
+            "version": "4.0.3"
+          },
+          {
+            "name": "@vitest/snapshot",
+            "version": "4.0.3"
+          },
+          {
+            "name": "@vitest/spy",
+            "version": "4.0.3"
+          },
+          {
+            "name": "@vitest/utils",
+            "version": "4.0.3"
+          },
+          {
+            "name": "agent-base",
+            "version": "7.1.4"
+          },
+          {
+            "name": "anynum",
+            "version": "1.0.0"
+          },
+          {
+            "name": "assertion-error",
+            "version": "2.0.1"
+          },
+          {
+            "name": "base64-js",
+            "version": "1.5.1"
+          },
+          {
+            "name": "beep-boop",
+            "version": "1.2.3"
+          },
+          {
+            "name": "better-auth",
+            "version": "1.6.11"
+          },
+          {
+            "name": "better-call",
+            "version": "1.3.5"
+          },
+          {
+            "name": "better-sqlite3",
+            "version": "11.10.0"
+          },
+          {
+            "name": "bignumber.js",
+            "version": "9.3.1"
+          },
+          {
+            "name": "bindings",
+            "version": "1.5.0"
+          },
+          {
+            "name": "bl",
+            "version": "4.1.0"
+          },
+          {
+            "name": "bmp-js",
+            "version": "0.1.0"
+          },
+          {
+            "name": "bowser",
+            "version": "2.14.1"
+          },
+          {
+            "name": "buffer",
+            "version": "5.6.0"
+          },
+          {
+            "name": "buffer-from",
+            "version": "1.1.2"
+          },
+          {
+            "name": "busboy",
+            "version": "1.6.0"
+          },
+          {
+            "name": "c12",
+            "version": "3.3.4"
+          },
+          {
+            "name": "call-bind-apply-helpers",
+            "version": "1.0.2"
+          },
+          {
+            "name": "call-bound",
+            "version": "1.0.4"
+          },
+          {
+            "name": "chai",
+            "version": "6.2.2"
+          },
+          {
+            "name": "chokidar",
+            "version": "5.0.0"
+          },
+          {
+            "name": "chownr",
+            "version": "1.1.4"
+          },
+          {
+            "name": "confbox",
+            "version": "0.2.4"
+          },
+          {
+            "name": "core-util-is",
+            "version": "1.0.3"
+          },
+          {
+            "name": "corepack",
+            "version": "0.34.6"
+          },
+          {
+            "name": "cron-parser",
+            "version": "5.5.0"
+          },
+          {
+            "name": "data-uri-to-buffer",
+            "version": "4.0.1"
+          },
+          {
+            "name": "debug",
+            "version": "4.4.3"
+          },
+          {
+            "name": "decompress-response",
+            "version": "6.0.0"
+          },
+          {
+            "name": "deep-extend",
+            "version": "0.6.0"
+          },
+          {
+            "name": "deepmerge",
+            "version": "4.3.1"
+          },
+          {
+            "name": "defu",
+            "version": "6.1.7"
+          },
+          {
+            "name": "destr",
+            "version": "2.0.5"
+          },
+          {
+            "name": "detect-libc",
+            "version": "2.0.2"
+          },
+          {
+            "name": "dom-serializer",
+            "version": "2.0.0"
+          },
+          {
+            "name": "domelementtype",
+            "version": "2.3.0"
+          },
+          {
+            "name": "domhandler",
+            "version": "5.0.3"
+          },
+          {
+            "name": "domutils",
+            "version": "3.2.2"
+          },
+          {
+            "name": "dotenv",
+            "version": "17.4.2"
+          },
+          {
+            "name": "drizzle-kit",
+            "version": "0.31.10"
+          },
+          {
+            "name": "drizzle-orm",
+            "version": "0.45.2"
+          },
+          {
+            "name": "dunder-proto",
+            "version": "1.0.1"
+          },
+          {
+            "name": "end-of-stream",
+            "version": "1.4.5"
+          },
+          {
+            "name": "entities",
+            "version": "4.5.0"
+          },
+          {
+            "name": "error-causes",
+            "version": "3.0.2"
+          },
+          {
+            "name": "es-define-property",
+            "version": "1.0.1"
+          },
+          {
+            "name": "es-errors",
+            "version": "1.3.0"
+          },
+          {
+            "name": "es-module-lexer",
+            "version": "1.7.0"
+          },
+          {
+            "name": "es-object-atoms",
+            "version": "1.1.2"
+          },
+          {
+            "name": "esbuild",
+            "version": "0.18.20"
+          },
+          {
+            "name": "escape-string-regexp",
+            "version": "5.0.0"
+          },
+          {
+            "name": "estree-walker",
+            "version": "3.0.3"
+          },
+          {
+            "name": "eventemitter3",
+            "version": "5.0.4"
+          },
+          {
+            "name": "events",
+            "version": "3.3.0"
+          },
+          {
+            "name": "expand-template",
+            "version": "2.0.3"
+          },
+          {
+            "name": "expect-type",
+            "version": "1.3.0"
+          },
+          {
+            "name": "exsolve",
+            "version": "1.0.8"
+          },
+          {
+            "name": "fast-deep-equal",
+            "version": "2.0.1"
+          },
+          {
+            "name": "fast-xml-builder",
+            "version": "1.2.0"
+          },
+          {
+            "name": "fast-xml-parser",
+            "version": "5.7.3"
+          },
+          {
+            "name": "fdir",
+            "version": "6.5.0"
+          },
+          {
+            "name": "fetch-blob",
+            "version": "3.2.0"
+          },
+          {
+            "name": "figue",
+            "version": "3.2.0"
+          },
+          {
+            "name": "file-type",
+            "version": "21.3.4"
+          },
+          {
+            "name": "file-uri-to-path",
+            "version": "1.0.0"
+          },
+          {
+            "name": "filename-reserved-regex",
+            "version": "4.0.0"
+          },
+          {
+            "name": "filenamify",
+            "version": "7.0.1"
+          },
+          {
+            "name": "formdata-polyfill",
+            "version": "4.0.10"
+          },
+          {
+            "name": "fs-constants",
+            "version": "1.0.0"
+          },
+          {
+            "name": "function-bind",
+            "version": "1.1.2"
+          },
+          {
+            "name": "get-intrinsic",
+            "version": "1.3.0"
+          },
+          {
+            "name": "get-proto",
+            "version": "1.0.1"
+          },
+          {
+            "name": "get-tsconfig",
+            "version": "4.14.0"
+          },
+          {
+            "name": "giget",
+            "version": "3.3.0"
+          },
+          {
+            "name": "github-from-package",
+            "version": "0.0.0"
+          },
+          {
+            "name": "gopd",
+            "version": "1.2.0"
+          },
+          {
+            "name": "has-symbols",
+            "version": "1.1.0"
+          },
+          {
+            "name": "hasown",
+            "version": "2.0.4"
+          },
+          {
+            "name": "hono",
+            "version": "4.12.25"
+          },
+          {
+            "name": "html-to-text",
+            "version": "9.0.5"
+          },
+          {
+            "name": "htmlparser2",
+            "version": "8.0.2"
+          },
+          {
+            "name": "http-proxy-agent",
+            "version": "7.0.2"
+          },
+          {
+            "name": "https-proxy-agent",
+            "version": "7.0.6"
+          },
+          {
+            "name": "iconv-lite",
+            "version": "0.4.24"
+          },
+          {
+            "name": "idb-keyval",
+            "version": "6.2.5"
+          },
+          {
+            "name": "ieee754",
+            "version": "1.2.1"
+          },
+          {
+            "name": "immediate",
+            "version": "3.0.6"
+          },
+          {
+            "name": "inherits",
+            "version": "2.0.4"
+          },
+          {
+            "name": "ini",
+            "version": "1.3.8"
+          },
+          {
+            "name": "is-url",
+            "version": "1.2.4"
+          },
+          {
+            "name": "isarray",
+            "version": "1.0.0"
+          },
+          {
+            "name": "jiti",
+            "version": "2.7.0"
+          },
+          {
+            "name": "jose",
+            "version": "6.2.3"
+          },
+          {
+            "name": "js-base64",
+            "version": "3.7.8"
+          },
+          {
+            "name": "jszip",
+            "version": "3.10.1"
+          },
+          {
+            "name": "kysely",
+            "version": "0.28.17"
+          },
+          {
+            "name": "leac",
+            "version": "0.6.0"
+          },
+          {
+            "name": "libsql",
+            "version": "0.4.7"
+          },
+          {
+            "name": "lie",
+            "version": "3.3.0"
+          },
+          {
+            "name": "luxon",
+            "version": "3.7.2"
+          },
+          {
+            "name": "magic-string",
+            "version": "0.30.21"
+          },
+          {
+            "name": "magicast",
+            "version": "0.3.5"
+          },
+          {
+            "name": "math-intrinsics",
+            "version": "1.1.0"
+          },
+          {
+            "name": "mime-db",
+            "version": "1.54.0"
+          },
+          {
+            "name": "mime-types",
+            "version": "3.0.2"
+          },
+          {
+            "name": "mimic-response",
+            "version": "3.1.0"
+          },
+          {
+            "name": "minimist",
+            "version": "1.2.8"
+          },
+          {
+            "name": "mkdirp-classic",
+            "version": "0.5.3"
+          },
+          {
+            "name": "ms",
+            "version": "2.1.3"
+          },
+          {
+            "name": "nanoid",
+            "version": "3.3.12"
+          },
+          {
+            "name": "nanostores",
+            "version": "1.3.0"
+          },
+          {
+            "name": "napi-build-utils",
+            "version": "2.0.0"
+          },
+          {
+            "name": "node-abi",
+            "version": "3.92.0"
+          },
+          {
+            "name": "node-cron",
+            "version": "3.0.3"
+          },
+          {
+            "name": "node-domexception",
+            "version": "1.0.0"
+          },
+          {
+            "name": "node-fetch",
+            "version": "2.7.0"
+          },
+          {
+            "name": "node-fetch-native",
+            "version": "1.6.7"
+          },
+          {
+            "name": "nodemailer",
+            "version": "7.0.13"
+          },
+          {
+            "name": "object-inspect",
+            "version": "1.13.4"
+          },
+          {
+            "name": "ofetch",
+            "version": "1.4.1"
+          },
+          {
+            "name": "ohash",
+            "version": "2.0.11"
+          },
+          {
+            "name": "once",
+            "version": "1.4.0"
+          },
+          {
+            "name": "opencollective-postinstall",
+            "version": "2.0.3"
+          },
+          {
+            "name": "p-limit",
+            "version": "7.3.0"
+          },
+          {
+            "name": "p-queue",
+            "version": "8.1.1"
+          },
+          {
+            "name": "p-timeout",
+            "version": "6.1.4"
+          },
+          {
+            "name": "pako",
+            "version": "1.0.11"
+          },
+          {
+            "name": "parseley",
+            "version": "0.12.1"
+          },
+          {
+            "name": "path-expression-matcher",
+            "version": "1.5.0"
+          },
+          {
+            "name": "pathe",
+            "version": "2.0.3"
+          },
+          {
+            "name": "peberminta",
+            "version": "0.9.0"
+          },
+          {
+            "name": "perfect-debounce",
+            "version": "2.1.0"
+          },
+          {
+            "name": "picocolors",
+            "version": "1.1.1"
+          },
+          {
+            "name": "picomatch",
+            "version": "4.0.4"
+          },
+          {
+            "name": "pkg-types",
+            "version": "2.3.1"
+          },
+          {
+            "name": "postcss",
+            "version": "8.5.15"
+          },
+          {
+            "name": "posthog-node",
+            "version": "5.36.17"
+          },
+          {
+            "name": "prebuild-install",
+            "version": "7.1.3"
+          },
+          {
+            "name": "prettier",
+            "version": "3.8.4"
+          },
+          {
+            "name": "process-nextick-args",
+            "version": "2.0.1"
+          },
+          {
+            "name": "promise-limit",
+            "version": "2.7.0"
+          },
+          {
+            "name": "pump",
+            "version": "3.0.4"
+          },
+          {
+            "name": "qs",
+            "version": "6.15.2"
+          },
+          {
+            "name": "rc",
+            "version": "1.2.8"
+          },
+          {
+            "name": "rc9",
+            "version": "3.0.1"
+          },
+          {
+            "name": "react",
+            "version": "19.1.0"
+          },
+          {
+            "name": "react-dom",
+            "version": "19.1.0"
+          },
+          {
+            "name": "react-promise-suspense",
+            "version": "0.3.4"
+          },
+          {
+            "name": "readable-stream",
+            "version": "2.3.8"
+          },
+          {
+            "name": "readdirp",
+            "version": "5.0.0"
+          },
+          {
+            "name": "regenerator-runtime",
+            "version": "0.13.11"
+          },
+          {
+            "name": "resend",
+            "version": "4.8.0"
+          },
+          {
+            "name": "resolve-pkg-maps",
+            "version": "1.0.0"
+          },
+          {
+            "name": "rollup",
+            "version": "4.61.1"
+          },
+          {
+            "name": "rou3",
+            "version": "0.7.12"
+          },
+          {
+            "name": "rtf-parser",
+            "version": "1.3.3"
+          },
+          {
+            "name": "safe-buffer",
+            "version": "5.1.2"
+          },
+          {
+            "name": "safer-buffer",
+            "version": "2.1.2"
+          },
+          {
+            "name": "scheduler",
+            "version": "0.26.0"
+          },
+          {
+            "name": "selderee",
+            "version": "0.11.0"
+          },
+          {
+            "name": "semver",
+            "version": "7.8.4"
+          },
+          {
+            "name": "set-cookie-parser",
+            "version": "3.1.0"
+          },
+          {
+            "name": "setimmediate",
+            "version": "1.0.5"
+          },
+          {
+            "name": "sharp",
+            "version": "0.34.5"
+          },
+          {
+            "name": "side-channel",
+            "version": "1.1.1"
+          },
+          {
+            "name": "side-channel-list",
+            "version": "1.0.1"
+          },
+          {
+            "name": "side-channel-map",
+            "version": "1.0.1"
+          },
+          {
+            "name": "side-channel-weakmap",
+            "version": "1.0.2"
+          },
+          {
+            "name": "siginfo",
+            "version": "2.0.0"
+          },
+          {
+            "name": "simple-concat",
+            "version": "1.0.1"
+          },
+          {
+            "name": "simple-get",
+            "version": "4.0.1"
+          },
+          {
+            "name": "sisteransi",
+            "version": "1.0.5"
+          },
+          {
+            "name": "source-map",
+            "version": "0.6.1"
+          },
+          {
+            "name": "source-map-js",
+            "version": "1.2.1"
+          },
+          {
+            "name": "source-map-support",
+            "version": "0.5.21"
+          },
+          {
+            "name": "stackback",
+            "version": "0.0.2"
+          },
+          {
+            "name": "std-env",
+            "version": "3.10.0"
+          },
+          {
+            "name": "stream-browserify",
+            "version": "3.0.0"
+          },
+          {
+            "name": "streamsearch",
+            "version": "1.1.0"
+          },
+          {
+            "name": "string_decoder",
+            "version": "1.1.1"
+          },
+          {
+            "name": "strip-json-comments",
+            "version": "2.0.1"
+          },
+          {
+            "name": "stripe",
+            "version": "17.7.0"
+          },
+          {
+            "name": "strnum",
+            "version": "2.4.0"
+          },
+          {
+            "name": "strtok3",
+            "version": "10.3.5"
+          },
+          {
+            "name": "tar-fs",
+            "version": "2.1.4"
+          },
+          {
+            "name": "tar-stream",
+            "version": "2.2.0"
+          },
+          {
+            "name": "tesseract.js",
+            "version": "6.0.1"
+          },
+          {
+            "name": "tesseract.js-core",
+            "version": "6.1.2"
+          },
+          {
+            "name": "tinybench",
+            "version": "2.9.0"
+          },
+          {
+            "name": "tinyexec",
+            "version": "0.3.2"
+          },
+          {
+            "name": "tinyglobby",
+            "version": "0.2.17"
+          },
+          {
+            "name": "tinyrainbow",
+            "version": "3.1.0"
+          },
+          {
+            "name": "token-types",
+            "version": "6.1.2"
+          },
+          {
+            "name": "tr46",
+            "version": "0.0.3"
+          },
+          {
+            "name": "tsee",
+            "version": "1.3.4"
+          },
+          {
+            "name": "tslib",
+            "version": "2.8.1"
+          },
+          {
+            "name": "tsx",
+            "version": "4.22.4"
+          },
+          {
+            "name": "tunnel-agent",
+            "version": "0.6.0"
+          },
+          {
+            "name": "typescript",
+            "version": "6.0.3"
+          },
+          {
+            "name": "ufo",
+            "version": "1.6.4"
+          },
+          {
+            "name": "uint8array-extras",
+            "version": "1.5.0"
+          },
+          {
+            "name": "undici",
+            "version": "8.4.1"
+          },
+          {
+            "name": "undici-types",
+            "version": "7.24.6"
+          },
+          {
+            "name": "unpdf",
+            "version": "1.6.2"
+          },
+          {
+            "name": "util-deprecate",
+            "version": "1.0.2"
+          },
+          {
+            "name": "uuid",
+            "version": "8.3.2"
+          },
+          {
+            "name": "valibot",
+            "version": "1.4.1"
+          },
+          {
+            "name": "vite",
+            "version": "7.3.5"
+          },
+          {
+            "name": "vitest",
+            "version": "4.0.3"
+          },
+          {
+            "name": "wasm-feature-detect",
+            "version": "1.8.0"
+          },
+          {
+            "name": "web-streams-polyfill",
+            "version": "3.3.3"
+          },
+          {
+            "name": "webidl-conversions",
+            "version": "3.0.1"
+          },
+          {
+            "name": "whatwg-url",
+            "version": "5.0.0"
+          },
+          {
+            "name": "why-is-node-running",
+            "version": "2.3.0"
+          },
+          {
+            "name": "wrappy",
+            "version": "1.0.2"
+          },
+          {
+            "name": "ws",
+            "version": "8.21.0"
+          },
+          {
+            "name": "xml-naming",
+            "version": "0.1.0"
+          },
+          {
+            "name": "yaml",
+            "version": "2.9.0"
+          },
+          {
+            "name": "yocto-queue",
+            "version": "1.2.2"
+          },
+          {
+            "name": "zlibjs",
+            "version": "0.3.1"
+          },
+          {
+            "name": "zod",
+            "version": "4.4.3"
+          }
+        ],
+        "php": [],
+        "python": [
+          {
+            "name": "example",
+            "version": "21.12"
+          },
+          {
+            "name": "packaging",
+            "version": "26.0"
+          }
+        ],
+        "ruby": [],
+        "rust": []
+      },
+      "source": "upstream",
+      "summary": {
+        "dotnet": 0,
+        "freebsd": 106,
+        "go": 3,
+        "java": 0,
+        "node": 347,
+        "php": 0,
+        "python": 2,
+        "ruby": 0,
+        "rust": 0,
+        "total": 458
+      }
+    }
+  }
+}
