@@ -10,7 +10,7 @@
 # --------------------------------------------------------------------------
 
 ARG BASE_VERSION=15
-ARG UPSTREAM_URL="https://api.github.com/repos/papra-hq/papra/releases/latest"
+ARG UPSTREAM_URL="https://api.github.com/repos/papra-hq/papra/releases"
 
 # ==========================================================================
 # Stage 1: Builder
@@ -56,11 +56,11 @@ RUN --mount=type=secret,id=github_token \
     if [ -n "${GITHUB_TOKEN}" ]; then \
       export HTTP_AUTH="basic:*:x-access-token:${GITHUB_TOKEN}"; \
     fi && \
-    VERSION=$(fetch -qo - "${UPSTREAM_URL}" | jq -r '.tag_name') && \
+    VERSION=$(fetch -qo - "${UPSTREAM_URL}" | jq -r '[.[].tag_name | select(startswith("@papra/app@"))][0]') && \
     echo "Resolved VERSION=$VERSION" && \
     git clone --depth 1 --branch ${VERSION} \
       https://github.com/papra-hq/papra.git . && \
-    echo "${VERSION}" > /tmp/app_version
+    echo "${VERSION##*@}" > /tmp/app_version
 
 # Override pnpm supportedArchitectures — upstream locks to Linux only.
 # FreeBSD needs its own platform-specific binaries (e.g. @esbuild/freebsd-x64).
@@ -191,8 +191,8 @@ FROM ghcr.io/daemonless/base:${BASE_VERSION}
 
 ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="node24 nginx tesseract tesseract-data"
-ARG UPSTREAM_URL="https://api.github.com/repos/papra-hq/papra/releases/latest"
-ARG UPSTREAM_JQ=".tag_name"
+ARG UPSTREAM_URL="https://api.github.com/repos/papra-hq/papra/releases"
+ARG UPSTREAM_JQ="[.[].tag_name | select(startswith(\"@papra/app@\"))][0] | ltrimstr(\"@papra/app@\")"
 ARG HEALTHCHECK_ENDPOINT="http://localhost:1221"
 
 ENV HEALTHCHECK_URL="${HEALTHCHECK_ENDPOINT}"

@@ -12,7 +12,7 @@ Minimalist self-hosted document management platform (Paperless alternative) on F
 
 | | |
 |---|---|
-| **Registry** | `ghcr.io/jtrotsky/papra` |
+| **Registry** | `ghcr.io/daemonless/papra` |
 | **Source** | [https://github.com/papra-hq/papra](https://github.com/papra-hq/papra) |
 | **Website** | [https://papra.app](https://papra.app) |
 
@@ -33,25 +33,24 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 ```yaml
 services:
   papra:
-    image: ghcr.io/jtrotsky/papra:latest
+    image: "ghcr.io/daemonless/papra:latest"
     container_name: papra
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - NODE_ENV=production
-      - APP_BASE_URL=https://papra.droog.nz
-      - PORT=1222
-      - SERVER_HOSTNAME=127.0.0.1
-      - SERVER_SERVE_PUBLIC_DIR=false
-      - DATABASE_URL=file:/app-data/db/db.sqlite
-      - DOCUMENT_STORAGE_FILESYSTEM_ROOT=/app-data/documents
-      - PAPRA_CONFIG_DIR=/app-data
-      - INGESTION_FOLDER_ROOT=/ingestion
-      - EMAILS_DRY_RUN=true
-      - BETTER_AUTH_TELEMETRY=0
-      - AUTH_SECRET=${PAPRA_AUTH_SECRET}
-      - AUTH_IS_REGISTRATION_ENABLED=true
+      - PUID=1000  # User ID for the application process
+      - PGID=1000  # Group ID for the application process
+      - TZ=Etc/UTC  # Timezone for the container
+      - NODE_ENV=production  # Node runtime mode; leave as 'production'
+      - PORT=1222  # Internal node backend port (nginx proxies to it); leave as 1222
+      - SERVER_HOSTNAME=127.0.0.1  # Internal bind address for the node backend; leave as 127.0.0.1
+      - SERVER_SERVE_PUBLIC_DIR=false  # Whether the node backend serves the SPA itself; 'false' (nginx serves it)
+      - DATABASE_URL=file:/app-data/db/db.sqlite  # SQLite database URL (file:/app-data/db/db.sqlite)
+      - DOCUMENT_STORAGE_FILESYSTEM_ROOT=/app-data/documents  # Filesystem path where uploaded documents are stored (under the /app-data volume)
+      - PAPRA_CONFIG_DIR=/app-data  # Directory Papra reads its config from (under the /app-data volume)
+      - INGESTION_FOLDER_ROOT=/ingestion  # Watched folder for drop-in document ingestion
+      - EMAILS_DRY_RUN=true  # If 'true', emails are logged instead of sent (no SMTP configured by default)
+      - BETTER_AUTH_TELEMETRY=0  # better-auth telemetry; '0' disables it
+      - AUTH_SECRET=${PAPRA_AUTH_SECRET}  # better-auth session signing secret, >=32 chars. Optional: if unset, the container generates a strong secret on first boot and persists it under /app-data. Set one you control with `openssl rand -hex 48` to manage it yourself.
+      - AUTH_IS_REGISTRATION_ENABLED=true  # Set to false after creating your account to lock down signups
     volumes:
       - "/path/to/containers/papra/app-data:/app-data"
     restart: unless-stopped
@@ -67,7 +66,6 @@ PUID=1000
 PGID=1000
 TZ=Etc/UTC
 NODE_ENV=production
-APP_BASE_URL=https://papra.droog.nz
 PORT=1222
 SERVER_HOSTNAME=127.0.0.1
 SERVER_SERVE_PUBLIC_DIR=false
@@ -99,7 +97,6 @@ services:
         - PGID: !ENV '${PGID}'
         - TZ: !ENV '${TZ}'
         - NODE_ENV: !ENV '${NODE_ENV}'
-        - APP_BASE_URL: !ENV '${APP_BASE_URL}'
         - PORT: !ENV '${PORT}'
         - SERVER_HOSTNAME: !ENV '${SERVER_HOSTNAME}'
         - SERVER_SERVE_PUBLIC_DIR: !ENV '${SERVER_SERVE_PUBLIC_DIR}'
@@ -124,7 +121,7 @@ volumes:
 ARG tag=latest
 
 OPTION overwrite=force
-OPTION from=ghcr.io/jtrotsky/papra:${tag}
+OPTION from=ghcr.io/daemonless/papra:${tag}
 ```
 
 ### Podman CLI
@@ -135,7 +132,6 @@ podman run -d --name papra \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -e NODE_ENV=production \
-  -e APP_BASE_URL=https://papra.droog.nz \
   -e PORT=1222 \
   -e SERVER_HOSTNAME=127.0.0.1 \
   -e SERVER_SERVE_PUBLIC_DIR=false \
@@ -148,7 +144,7 @@ podman run -d --name papra \
   -e AUTH_SECRET=${PAPRA_AUTH_SECRET} \
   -e AUTH_IS_REGISTRATION_ENABLED=true \
   -v /path/to/containers/papra/app-data:/app-data \
-  ghcr.io/jtrotsky/papra:latest
+  ghcr.io/daemonless/papra:latest
 ```
 
 ### Ansible
@@ -157,7 +153,7 @@ podman run -d --name papra \
 - name: Deploy papra
   containers.podman.podman_container:
     name: papra
-    image: ghcr.io/jtrotsky/papra:latest
+    image: "ghcr.io/daemonless/papra:latest"
     state: started
     restart_policy: always
     env:
@@ -165,7 +161,6 @@ podman run -d --name papra \
       PGID: "1000"
       TZ: "Etc/UTC"
       NODE_ENV: "production"
-      APP_BASE_URL: "https://papra.droog.nz"
       PORT: "1222"
       SERVER_HOSTNAME: "127.0.0.1"
       SERVER_SERVE_PUBLIC_DIR: "false"
@@ -191,7 +186,6 @@ podman run -d --name papra \
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `Etc/UTC` | Timezone for the container |
 | `NODE_ENV` | `production` | Node runtime mode; leave as 'production' |
-| `APP_BASE_URL` | `https://papra.droog.nz` |  |
 | `PORT` | `1222` | Internal node backend port (nginx proxies to it); leave as 1222 |
 | `SERVER_HOSTNAME` | `127.0.0.1` | Internal bind address for the node backend; leave as 127.0.0.1 |
 | `SERVER_SERVE_PUBLIC_DIR` | `false` | Whether the node backend serves the SPA itself; 'false' (nginx serves it) |
@@ -213,3 +207,7 @@ podman run -d --name papra \
 **Architectures:** amd64
 **User:** `bsd` (UID/GID via PUID/PGID, defaults to 1000:1000)
 **Base:** FreeBSD 15.0
+
+---
+
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.
