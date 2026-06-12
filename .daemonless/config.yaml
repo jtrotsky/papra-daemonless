@@ -1,0 +1,24 @@
+# dbuild configuration file
+# Full reference: https://github.com/daemonless/dbuild
+
+build:
+  variants:
+    - tag: latest
+      containerfile: Containerfile
+      default: true
+
+cit:
+  # Papra is a web UI — verify it actually renders, not just that the socket opens.
+  # Captures port 1221 (nginx -> SPA) and compares against .daemonless/baseline.png.
+  mode: screenshot
+  port: 1221
+  # HTTP readiness gate before capture: nginx returns 502 while the node backend is
+  # still booting and 200 once /api/health answers, so dbuild waits for the real app
+  # (not just the open socket) before screenshotting. More reliable than a log pattern.
+  health: /api/health
+  # Best-effort early log hint so the ready-scan returns fast (result is advisory; the
+  # port + health gates above do the real waiting).
+  ready: "Starting Papra server|Migrations complete"
+  # Give the SolidStart SPA a moment to hydrate after health passes before the shot.
+  screenshot_wait: 5
+  puid: false

@@ -1,0 +1,57 @@
+#!/bin/sh
+# Papra Node.js backend s6 service.
+# Runs DB migrations (via tsx) then starts the bundled server (node dist/index.js).
+# Listens on 127.0.0.1:$PORT (default 1222); nginx fronts it on 1221.
+
+# NOTE: do NOT `cd` at this level. s6-notifyoncheck (below) requires its cwd to be
+# the service directory so it can reach ./supervise and ./notification-fd — cd'ing
+# first makes it fail with "s6-supervise not running". The node commands cd into
+# /app inside their own subshell instead.
+
+# Papra targets node 26, which has the TC39 Temporal API as a global. FreeBSD's
+# node 24 only exposes it behind V8's --harmony-temporal flag. That flag is NOT
+# permitted in NODE_OPTIONS, so it must be passed directly on each node command.
+NODE=/usr/local/bin/node
+NODE_FLAGS="--harmony-temporal"
+
+# better-auth refuses to start in production (NODE_ENV=production) with the default
+# auth secret. If the operator supplied AUTH_SECRET (compose/secrets.env), use it.
+# Otherwise generate a strong random secret ONCE and persist it under the data volume
+# so sessions survive restarts — keeps the image secure-by-default and bootable
+# standalone (no hardcoded secret shipped; also lets CIT run the bare image).
+SECRET_FILE=/app-data/.auth_secret
+if [ -z "${AUTH_SECRET:-}" ]; then
+    if [ ! -s "$SECRET_FILE" ]; then
+        mkdir -p /app-data
+        $NODE -e 'process.stdout.write(require("crypto").randomBytes(48).toString("hex"))' > "$SECRET_FILE"
+        chmod 600 "$SECRET_FILE"
+        chown bsd:bsd "$SECRET_FILE" 2>/dev/null || true
+        echo "[INFO] No AUTH_SECRET provided; generated one at $SECRET_FILE."
+    else
+        echo "[INFO] No AUTH_SECRET provided; reusing persisted secret at $SECRET_FILE."
+    fi
+    AUTH_SECRET=$(cat "$SECRET_FILE")
+    export AUTH_SECRET
+fi
+
+echo "[INFO] Running database migrations..."
+# tsx's bin wrapper is a bash script that breaks under FreeBSD /bin/sh, so load
+# tsx as a Node loader directly (same trick as sparky-fitness). cd /app inside the
+# subshell so this run script keeps its cwd at the service directory (see note above).
+s6-setuidgid bsd sh -c "cd /app && exec $NODE $NODE_FLAGS --import tsx src/scripts/migrate-up.script.ts"
+MIG_RC=$?
+if [ "$MIG_RC" -ne 0 ]; then
+    echo "[ERROR] Migrations failed (exit $MIG_RC)." >&2
+    exit 1
+fi
+echo "[INFO] Migrations complete."
+
+echo "[INFO] Starting Papra server on 127.0.0.1:${PORT:-1222}..."
+# s6-notifyoncheck polls data/check until /api/ping answers, then signals readiness
+# on fd 3 (declared in ./notification-fd) so s6 reports the service "up" only once
+# the backend is genuinely serving — makes CIT screenshot capture deterministic.
+# Run cwd stays at the service dir (required); node cd's to /app in its own subshell.
+# Check is passed by absolute path (baked into the image). node does not double-fork, so no -d.
+exec s6-notifyoncheck -3 3 -n 120 -w 1000 \
+    -c /etc/services.d/papra-server/data/check \
+    s6-setuidgid bsd sh -c "cd /app && exec $NODE $NODE_FLAGS dist/index.js"
