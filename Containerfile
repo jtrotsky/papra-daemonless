@@ -21,7 +21,7 @@ ARG UPSTREAM_URL
 
 # Build dependencies.
 #  - node24 / npm-node24 / corepack: JS toolchain (Papra targets node26; node24 is
-#    the newest in pkg and runs Papra fine).
+#    the newest LTS in FreeBSD pkg — node26 is not yet packaged — and runs Papra fine).
 #  - git-lite jq: clone the release tag resolved from the GitHub API.
 #  - pkgconf python3 gmake: node-gyp's build driver dependencies.
 # The daemonless base jail ships NO C toolchain and NO /usr/include, so the
