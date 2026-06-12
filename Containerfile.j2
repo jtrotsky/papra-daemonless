@@ -1,0 +1,255 @@
+# --------------------------------------------------------------------------
+# Papra — FreeBSD daemonless container
+# Minimalist self-hosted document management platform (Paperless alternative)
+# --------------------------------------------------------------------------
+
+ARG BASE_VERSION=15
+ARG UPSTREAM_URL="https://api.github.com/repos/papra-hq/papra/releases/latest"
+
+# ==========================================================================
+# Stage 1: Builder
+# ==========================================================================
+FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
+
+ARG UPSTREAM_URL
+
+# Build dependencies.
+#  - node24 / npm-node24 / corepack: JS toolchain (Papra targets node26; node24 is
+#    the newest LTS in FreeBSD pkg — node26 is not yet packaged — and runs Papra fine).
+#  - git-lite jq: clone the release tag resolved from the GitHub API.
+#  - pkgconf python3 gmake: node-gyp's build driver dependencies.
+# The daemonless base jail ships NO C toolchain and NO /usr/include, so the
+# better-sqlite3 node-gyp build needs a full FreeBSD-native toolchain. We pull the
+# pkgbase packages so everything lands in /usr/bin under the default names node-gyp
+# expects (cc, c++, ld, ar, ranlib) — no CC/CXX overrides needed:
+#  - FreeBSD-clang     → /usr/bin/cc, clang, c++, clang++
+#  - FreeBSD-lld       → /usr/bin/ld (LLVM linker)
+#  - FreeBSD-toolchain → /usr/bin/ar, nm, ranlib (the archiver; `ar: not found` fix)
+#  - FreeBSD-clibs-dev → /usr/include libc + libc++ headers and crt objects
+# All builder-stage only — discarded, does not affect the final runtime image size.
+RUN pkg update && pkg install -y \
+    node24 npm-node24 corepack \
+    git-lite jq \
+    pkgconf python3 gmake \
+    FreeBSD-clang FreeBSD-lld FreeBSD-toolchain FreeBSD-clibs-dev \
+    && pkg clean -ay
+
+# Enable pnpm via corepack (Papra pins pnpm 11.1.1).
+RUN corepack enable && corepack prepare pnpm@11.1.1 --activate
+
+# Clone the latest release tag.
+# Resolve the version from the GitHub API. If a token is mounted (CI), pass it via
+# fetch's HTTP_AUTH env (basic auth, x-access-token user) so we get the higher API
+# rate limit on shared runner IPs. We do NOT inject the token into the URL with sed:
+# CI hands out a stateless JWT GITHUB_TOKEN that breaks URL parsing (empty tag ->
+# `git clone --branch ""`). Both this build recipe and upstream papra are public,
+# so the git clone itself stays unauthenticated.
+WORKDIR /build
+RUN --mount=type=secret,id=github_token \
+    GITHUB_TOKEN=$(cat /run/secrets/github_token 2>/dev/null || echo ""); \
+    if [ -n "${GITHUB_TOKEN}" ]; then \
+      export HTTP_AUTH="basic:*:x-access-token:${GITHUB_TOKEN}"; \
+    fi && \
+    VERSION=$(fetch -qo - "${UPSTREAM_URL}" | jq -r '.tag_name') && \
+    echo "Resolved VERSION=$VERSION" && \
+    git clone --depth 1 --branch ${VERSION} \
+      https://github.com/papra-hq/papra.git . && \
+    echo "${VERSION}" > /tmp/app_version
+
+# Override pnpm supportedArchitectures — upstream locks to Linux only.
+# FreeBSD needs its own platform-specific binaries (e.g. @esbuild/freebsd-x64).
+# We also allow the `wasm32` cpu so pnpm will fetch @img/sharp-wasm32 — sharp has
+# no FreeBSD native prebuilt, so we fall back to its WebAssembly runtime (added as a
+# server dependency below; loaded automatically by sharp/lib/sharp.js).
+RUN printf 'supportedArchitectures.os[]=current\nsupportedArchitectures.cpu[]=current\nsupportedArchitectures.cpu[]=wasm32\n' > .npmrc
+
+# Patch-rot guard for the four COPY-overwrite patches below. A `COPY patches/x.ts
+# dest/x.ts` silently CREATES dest/x.ts if upstream has moved or renamed the file,
+# so the real (unpatched) source elsewhere would ship and crash at runtime. Assert
+# every target path still exists in the cloned tree first, so an upstream move fails
+# the build loudly instead of no-op-ing the patch. (The sharp/canvas patches already
+# self-guard at their RUN steps; this covers the static-overwrite patches.)
+RUN for f in \
+      apps/papra-server/src/modules/app/database/database.ts \
+      apps/papra-server/src/modules/app/health-check/health-check.repository.ts \
+      apps/papra-server/src/modules/tasks/drivers/tasks-driver.registry.ts \
+      apps/papra-server/src/migrations/list/0006-organizations-invitations-improvement.migration.ts ; do \
+      test -f "$f" || { echo "PATCH DRIFT: upstream no longer has $f — review patches/ before COPY"; exit 1; }; \
+    done
+
+# FreeBSD DB driver swap: upstream's @libsql/client file: driver loads the native
+# `libsql` package which has no FreeBSD prebuilt and no buildable source. Replace
+# the local-file path with better-sqlite3 (builds from bundled SQLite via node-gyp)
+# and add a libsql-compatible db.batch() polyfill. See patches/database.ts.
+COPY patches/database.ts ./apps/papra-server/src/modules/app/database/database.ts
+
+# Companion fix: the DB health check reads a libsql-specific result shape, which
+# better-sqlite3 doesn't produce. Use a driver-agnostic query so /api/health is
+# accurate. See patches/health-check.repository.ts.
+COPY patches/health-check.repository.ts ./apps/papra-server/src/modules/app/health-check/health-check.repository.ts
+
+# Companion fix: the tasks-driver registry statically imports the libsql task
+# driver, which eagerly loads @libsql/client (native) and crashes at startup on
+# FreeBSD even though the default tasks driver is `memory`. Drop that import.
+# See patches/tasks-driver.registry.ts.
+COPY patches/tasks-driver.registry.ts ./apps/papra-server/src/modules/tasks/drivers/tasks-driver.registry.ts
+
+# Companion fix: migration 0006 uses libSQL's non-standard `ALTER COLUMN ... TO`
+# syntax, which standard SQLite (better-sqlite3) rejects. Replace it with the
+# SQLite-supported table-rebuild recipe (same resulting schema).
+# See patches/0006-organizations-invitations-improvement.migration.ts.
+COPY patches/0006-organizations-invitations-improvement.migration.ts ./apps/papra-server/src/migrations/list/0006-organizations-invitations-improvement.migration.ts
+
+# Add better-sqlite3 to the server workspace so the patched database.ts can
+# resolve it. We edit package.json directly (rather than `pnpm add`) so the
+# install stays a single deterministic resolve. better-sqlite3 ships a SQLite
+# amalgamation it compiles from source via node-gyp — no system SQLite needed.
+RUN node -e "const f='apps/papra-server/package.json';const p=require('./'+f);p.dependencies['better-sqlite3']='^11.10.0';require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
+
+# sharp 0.34.x ships no FreeBSD native prebuilt (its optionalDependencies cover only
+# darwin/linux/linuxmusl/win32/wasm32). sharp is statically imported by @papra/lecture
+# for image processing, so without a usable binary the server crashes at boot. Add
+# sharp's official platform-independent WebAssembly runtime as a direct server dep so
+# pnpm installs and deploys it; sharp/lib/sharp.js auto-loads `@img/sharp-wasm32` when
+# no native binary is present. PINNED to sharp's exact version (sharp requires its
+# platform packages to match exactly); a post-install guard fails the build if the
+# resolved sharp version drifts from this pin. (wasm: slower than native, but
+# self-contained — no system libvips and no libvips dependency chain in the image.)
+RUN node -e "const f='apps/papra-server/package.json';const p=require('./'+f);p.dependencies['@img/sharp-wasm32']='0.34.5';require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
+
+# pnpm v11 refuses to run a dependency's build scripts unless it is allow-listed,
+# and treats an ignored build as a hard error. Allow better-sqlite3 to compile its
+# native addon by appending it to the workspace allowBuilds map.
+RUN node -e "const f='pnpm-workspace.yaml';let s=require('fs').readFileSync(f,'utf8');if(!/allowBuilds:/.test(s)){s+='\nallowBuilds:\n';}s=s.replace(/allowBuilds:\n/, 'allowBuilds:\n  better-sqlite3: true\n');require('fs').writeFileSync(f,s)"
+
+# Install all needed workspaces. better-sqlite3 compiles here (it is allow-listed).
+RUN pnpm install --frozen-lockfile=false \
+    --filter "@papra/app-client..." \
+    --filter "@papra/app-server..."
+
+# Fail fast if the better-sqlite3 native addon didn't compile during install.
+# (pnpm's hoisted linker may place it at the workspace root rather than the
+# server package, so check both locations.) The deploy step below recompiles it
+# for the shipped /app/production tree, so no explicit rebuild is needed here.
+RUN ( test -f apps/papra-server/node_modules/better-sqlite3/build/Release/better_sqlite3.node || \
+      test -f node_modules/better-sqlite3/build/Release/better_sqlite3.node ) && \
+    echo "better-sqlite3 native addon present."
+
+# Build frontend (Vite) then server (esbuild bundle).
+RUN pnpm --filter "@papra/app-client..." run build
+RUN pnpm --filter "@papra/app-server..." run build
+
+# Deploy server to a standalone directory (flat node_modules, no workspace symlinks).
+RUN pnpm --filter=@papra/app-server --prod --legacy deploy /app/production
+
+# FreeBSD fix: @papra/lecture statically `import canvas from "@napi-rs/canvas"` at
+# module top-level. @napi-rs/canvas (Skia) has NO FreeBSD prebuilt and can't be
+# built here, so that eager import throws `Cannot find native binding` and crashes
+# the server at boot. canvas is only used to rasterize SCANNED PDFs before OCR
+# (digital PDFs and images don't need it), and lecture already calls it through a
+# lazy `canvasImport: async () => canvas` hook. We make the import itself lazy
+# (dynamic `import()` inside that hook) so the server boots normally; only
+# scanned-PDF OCR degrades on FreeBSD (it throws a catchable error at use, not at
+# boot). Guarded: the build fails if upstream changes the pattern (patch drift).
+RUN node -e "const fs=require('fs');const f='/app/production/node_modules/@papra/lecture/dist/index.js';let s=fs.readFileSync(f,'utf8');const imp='import canvas from \"@napi-rs/canvas\";';const use='canvasImport: async () => canvas,';if(!s.includes(imp)||!s.includes(use)){console.error('PATCH DRIFT: @papra/lecture canvas pattern not found; review the lazy-canvas patch');process.exit(1);}s=s.replace(imp,'').replace(use,'canvasImport: async () => (await import(\"@napi-rs/canvas\")).default,');if(s.includes(imp)){console.error('PATCH FAILED: static canvas import still present');process.exit(1);}fs.writeFileSync(f,s);console.log('Patched @papra/lecture: @napi-rs/canvas import is now lazy.');"
+
+# Verify the sharp wasm fallback deployed and that our pin still matches the resolved
+# sharp version (sharp loads @img/sharp-wasm32 only if their versions match exactly).
+# Fails the build loudly if upstream bumps sharp so the pin above can be updated.
+# Verify the sharp wasm fallback: (a) our pin matches the resolved sharp version
+# (sharp loads @img/sharp-wasm32 only if versions match exactly), and (b) sharp
+# actually loads — `require('sharp')` exercises the wasm runtime, pre-validating the
+# runtime boot and failing the build loudly if the wasm path regresses.
+# (versions are read via fs.readFileSync, not require(): @img/sharp-wasm32's exports
+# map doesn't expose ./package.json to require)
+RUN cd /app/production && \
+    PKGVER='const fs=require("fs");console.log(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).version)' && \
+    SHARP_VER=$(node -e "$PKGVER" node_modules/sharp/package.json) && \
+    WASM_VER=$(node -e "$PKGVER" node_modules/@img/sharp-wasm32/package.json) && \
+    echo "sharp=${SHARP_VER} sharp-wasm32=${WASM_VER}" && \
+    { [ "$SHARP_VER" = "$WASM_VER" ] || { echo "VERSION DRIFT: update the @img/sharp-wasm32 pin in Containerfile.j2 to ${SHARP_VER}"; exit 1; }; } && \
+    node -e "require('sharp'); console.log('sharp loads OK on FreeBSD via @img/sharp-wasm32')"
+
+# Carry the workspace manifest the server expects at runtime (upstream copies it too).
+RUN cp pnpm-workspace.yaml /app/production/pnpm-workspace.yaml || true
+
+# Ensure tsx is available in the deployed server (migrations run via `node --import tsx`).
+RUN if [ ! -f /app/production/node_modules/.bin/tsx ]; then \
+      cd /app/production && npm install tsx; \
+    fi
+
+# ==========================================================================
+# Stage 2: Runtime
+# ==========================================================================
+FROM ghcr.io/daemonless/base:${BASE_VERSION}
+
+ARG FREEBSD_ARCH=amd64
+ARG PACKAGES="node24 nginx tesseract tesseract-data"
+ARG UPSTREAM_URL="https://api.github.com/repos/papra-hq/papra/releases/latest"
+ARG UPSTREAM_JQ=".tag_name"
+ARG HEALTHCHECK_ENDPOINT="http://localhost:1221"
+
+ENV HEALTHCHECK_URL="${HEALTHCHECK_ENDPOINT}"
+
+LABEL org.opencontainers.image.title="Papra" \
+      org.opencontainers.image.description="Minimalist self-hosted document management platform on FreeBSD" \
+      org.opencontainers.image.source="https://github.com/daemonless/papra" \
+      org.opencontainers.image.url="https://github.com/papra-hq/papra" \
+      org.opencontainers.image.version="latest" \
+      org.opencontainers.image.licenses="AGPL-3.0" \
+      org.opencontainers.image.vendor="daemonless" \
+      org.opencontainers.image.authors="daemonless" \
+      io.daemonless.category="Productivity" \
+      io.daemonless.port="1221" \
+      io.daemonless.volumes="/app-data" \
+      io.daemonless.arch="${FREEBSD_ARCH}" \
+      io.daemonless.upstream-url="${UPSTREAM_URL}" \
+      io.daemonless.upstream-jq="${UPSTREAM_JQ}" \
+      io.daemonless.healthcheck-url="${HEALTHCHECK_ENDPOINT}" \
+      io.daemonless.packages="${PACKAGES}"
+
+# Install runtime dependencies.
+RUN pkg update && \
+    pkg install -y ${PACKAGES} && \
+    mkdir -p /app /app/public /app-data/db /app-data/documents /ingestion \
+             /var/log/nginx /var/run /var/tmp/nginx && \
+    pkg clean -ay && \
+    rm -rf /var/cache/pkg/* /var/db/pkg/repos/*
+
+# Copy built artifacts from builder.
+COPY --from=builder /tmp/app_version /app/version
+COPY --from=builder --chown=bsd:bsd /app/production /app
+COPY --from=builder --chown=bsd:bsd /build/apps/papra-client/dist /app/public
+
+# Ownership — /app and /app/public must be world-readable so the nginx worker
+# (www user) can serve the static client files.
+RUN chown -R bsd:bsd /app /app-data /ingestion && \
+    chmod o+x /app && \
+    chmod -R o+rX /app/public
+
+# Copy service files (s6 runners, nginx config, healthz).
+COPY root/ /
+RUN chmod +x /etc/services.d/*/run \
+              /etc/services.d/papra-server/data/check \
+              /etc/cont-init.d/* \
+              /healthz 2>/dev/null || true
+
+WORKDIR /app
+
+# Backend runtime config. The node server listens on 127.0.0.1:1222 (API only);
+# nginx fronts it on 1221, serving the SPA statically and proxying /api/.
+ENV NODE_ENV=production \
+    PORT=1222 \
+    SERVER_HOSTNAME=127.0.0.1 \
+    SERVER_SERVE_PUBLIC_DIR=false \
+    DATABASE_URL=file:/app-data/db/db.sqlite \
+    DOCUMENT_STORAGE_FILESYSTEM_ROOT=/app-data/documents \
+    PAPRA_CONFIG_DIR=/app-data \
+    INGESTION_FOLDER_ROOT=/ingestion \
+    EMAILS_DRY_RUN=true \
+    BETTER_AUTH_TELEMETRY=0 \
+    NODE_OPTIONS="--max-old-space-size=512"
+
+EXPOSE 1221
+
+VOLUME /app-data
